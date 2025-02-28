@@ -10,7 +10,6 @@
     gap: 5px;
   }
 </style>
-
 <div>
   <h1>NIMEKIRI</h1>
   <div class="overflow-x-auto bg-gray-800 rounded-lg shadow">
@@ -96,20 +95,18 @@
     <button
       (click)="goToPage(currentPage - 1)"
       [disabled]="currentPage === 1"
-      style="border-radius: 100%; height: 36px; width: 36px"
-      class="font-bold text-white cursor-pointer text-lg"
+      class="h-9 w-9 rounded-full font-bold text-white text-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {{ "<" }}
     </button>
     <ng-container *ngFor="let page of getDisplayedPages()">
       <button
-        class="cursor-pointer"
-        style="border-radius: 100%; height: 36px; width: 36px"
-        [ngClass]="{
-          'bg-white': currentPage === page,
-          'text-black': currentPage === page,
-        }"
         (click)="goToPage(page)"
+        class="h-9 w-9 rounded-full cursor-pointer transition-colors border border-transparent"
+        [ngClass]="{
+          'bg-white text-black': currentPage === page,
+          'hover:border-white': currentPage !== page
+        }"
       >
         {{ page }}
       </button>
@@ -117,8 +114,7 @@
     <button
       (click)="goToPage(currentPage + 1)"
       [disabled]="currentPage === totalPages"
-      style="border-radius: 100%; height: 36px; width: 36px"
-      class="font-bold text-white cursor-pointer text-lg"
+      class="h-9 w-9 rounded-full font-bold text-white text-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {{ ">" }}
     </button>
