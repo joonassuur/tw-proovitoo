@@ -1,8 +1,21 @@
-<div class="flex flex-row bg-[var(--twn-textColor)] h-screen">
+<div class="flex flex-col md:flex-row bg-[var(--twn-textColor)] h-screen">
+  <div
+    class="w-full bg-white md:hidden fixed top-0 left-0 right-0 shadow-md p-4 flex justify-between items-center relative z-99"
+  >
+    <button (click)="toggleSidebar()" class="text-black cursor-pointer">
+      ☰
+    </button>
+    <span class="font-bold text-lg">Menu</span>
+  </div>
   <app-sidebar
-    class="h-screen w-full max-w-[220px] bg-white fixed"
+    [ngClass]="{
+      '-translate-x-full': !sidebarOpen,
+      'translate-x-0': sidebarOpen,
+      'md:static md:translate-x-0': true
+    }"
+    class="h-screen w-full max-w-[220px] bg-white fixed transition-transform"
   ></app-sidebar>
-  <div class="ml-[220px] w-full py-20 px-10 h-full overflow-y-auto text-white">
+  <div class="w-full py-20 px-10 h-full overflow-y-auto text-white">
     <div class="max-w-[1000px] mx-auto">
       <router-outlet></router-outlet>
     </div>
