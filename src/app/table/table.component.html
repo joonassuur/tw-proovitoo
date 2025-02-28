@@ -1,0 +1,126 @@
+<style>
+  th {
+    position: relative;
+    text-align: left;
+  }
+
+  th span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+</style>
+
+<div>
+  <h1>NIMEKIRI</h1>
+  <div class="overflow-x-auto bg-gray-800 rounded-lg shadow">
+    <div class="overflow-x-auto bg-gray-800 rounded-lg shadow">
+      <table class="min-w-full text-left text-white">
+        <thead class="bg-[#333] text-white">
+          <tr>
+            <th
+              class="px-4 py-2 cursor-pointer w-[150px]"
+              (click)="sortTable('firstname')"
+            >
+              <span class="font-bold">Eesnimi</span>
+              <span [innerHTML]="getSortIcon('firstname')"></span>
+            </th>
+            <th
+              class="px-4 py-2 cursor-pointer w-[150px]"
+              (click)="sortTable('surname')"
+            >
+              <span class="font-bold">Perekonnanimi</span>
+              <span [innerHTML]="getSortIcon('surname')"></span>
+            </th>
+            <th
+              class="px-4 py-2 cursor-pointer w-[100px]"
+              (click)="sortTable('sex')"
+            >
+              <span class="font-bold">Sugu</span>
+              <span [innerHTML]="getSortIcon('sex')"></span>
+            </th>
+            <th
+              class="px-4 py-2 cursor-pointer w-[180px]"
+              (click)="sortTable('date')"
+            >
+              <span class="font-bold">Sünnikuupäev</span>
+              <span [innerHTML]="getSortIcon('date')"></span>
+            </th>
+            <th class="px-4 py-2 w-[150px]">
+              <span class="font-bold">Telefon</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let person of people">
+            <tr
+              class="border-b border-gray-700 cursor-pointer odd:bg-[var(--twn-textColor)] even:bg-[#4e5168]"
+              (click)="toggleRow(person.id)"
+            >
+              <td class="px-4 py-2">{{ person.firstname }}</td>
+              <td class="px-4 py-2">{{ person.surname }}</td>
+              <td class="px-4 py-2">
+                {{ person.sex === "m" ? "Mees" : "Naine" }}
+              </td>
+              <td class="px-4 py-2">
+                {{ person.date * 1000 | date : "dd.MM.yyyy" }}
+              </td>
+              <td class="px-4 py-2">{{ person.phone }}</td>
+            </tr>
+            <tr *ngIf="expandedRowId === person.id" class="bg-white text-black">
+              <td colspan="5" class="px-4 py-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                  <div *ngIf="person.image?.small" class="flex-shrink-0">
+                    <img
+                      [src]="person.image.small"
+                      [alt]="person.image.alt"
+                      class="w-64 h-auto rounded"
+                    />
+                  </div>
+                  <div class="flex-1 overflow-hidden">
+                    <div
+                      class="overflow-hidden text-ellipsis line-clamp-5"
+                      style="max-height: 212px; white-space: break-spaces"
+                      [innerHTML]="safeHtml(person.body)"
+                    ></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="flex justify-center items-center mt-4 space-x-2 text-white">
+    <button
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      style="border-radius: 100%; height: 36px; width: 36px"
+      class="font-bold text-white cursor-pointer text-lg"
+    >
+      {{ "<" }}
+    </button>
+    <ng-container *ngFor="let page of getDisplayedPages()">
+      <button
+        class="cursor-pointer"
+        style="border-radius: 100%; height: 36px; width: 36px"
+        [ngClass]="{
+          'bg-white': currentPage === page,
+          'text-black': currentPage === page,
+        }"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+    </ng-container>
+    <button
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+      style="border-radius: 100%; height: 36px; width: 36px"
+      class="font-bold text-white cursor-pointer text-lg"
+    >
+      {{ ">" }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div>
+  <h1>{{ article.title }}</h1>
+  <div
+    class="text-justify font-bold my-10"
+    [innerHTML]="safeHtml(article.intro)"
+  ></div>
+  <div class="relative mt-4 group overflow-hidden rounded-lg h-[500px]">
+    <div
+      class="absolute inset-0 bg-cover bg-center blur-md scale-110"
+      [style.background-image]="'url(' + article.image.medium + ')'"
+    ></div>
+
+    <img
+      [src]="article.image.medium"
+      [alt]="article.image.alt"
+      class="relative w-full h-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
+    />
+
+    <p
+      class="absolute bottom-0 left-0 right-0 bg-[rgba(0,0,0,.5)] bg-opacity-60 text-white p-2"
+    >
+      {{ article.image.title }}
+    </p>
+  </div>
+
+  <div
+    style="white-space: break-spaces"
+    class="my-6"
+    [innerHTML]="safeHtml(article.body)"
+  ></div>
+  <ng-container
+    *ngFor="let tag of article.tags"
+    class="flex justify-center gap-2"
+  >
+    <span
+      class="bg-[var(--twn-secondaryColor)] px-3 py-1 rounded-2xl font-bold mr-6"
+    >
+      {{ tag }}
+    </span>
+  </ng-container>
+</div>
