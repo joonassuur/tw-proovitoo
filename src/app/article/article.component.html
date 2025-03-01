@@ -1,4 +1,8 @@
-<div>
+<div *ngIf="loading" class="flex justify-center mt-4">
+  <app-spinner></app-spinner>
+</div>
+
+<div *ngIf="!loading">
   <h1>{{ article.title }}</h1>
   <div
     class="text-justify font-bold my-10"

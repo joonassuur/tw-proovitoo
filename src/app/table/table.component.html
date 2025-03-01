@@ -10,8 +10,14 @@
     gap: 5px;
   }
 </style>
-<div>
+
+<div *ngIf="loading" class="flex justify-center mt-4">
+  <app-spinner></app-spinner>
+</div>
+
+<div *ngIf="!loading">
   <h1>NIMEKIRI</h1>
+
   <div class="overflow-x-auto bg-gray-800 rounded-lg shadow">
     <div class="overflow-x-auto bg-gray-800 rounded-lg shadow">
       <table class="min-w-full text-left text-white">

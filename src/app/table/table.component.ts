@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableService } from '../table.service';
+import { SpinnerComponent } from '../spinner/spinner.component';
 import { Person } from '../types';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SpinnerComponent],
   templateUrl: './table.component.html',
 })
 export class TableComponent implements OnInit {
@@ -20,6 +21,7 @@ export class TableComponent implements OnInit {
   expandedRowId: string = '';
   sortColumn: string = '';
   sortDirection: '' | 'asc' | 'desc' = '';
+  loading = false;
 
   constructor(
     private tableService: TableService,
@@ -31,10 +33,17 @@ export class TableComponent implements OnInit {
   }
 
   loadPeople(): void {
-    this.tableService.getPeople(this.totalItems).subscribe((response) => {
-      this.peopleAll = response.list;
-      this.totalPages = Math.ceil(this.peopleAll.length / this.pageSize);
-      this.updatePagedData();
+    this.loading = true;
+    this.tableService.getPeople(this.totalItems).subscribe({
+      next: (response) => {
+        this.peopleAll = response.list;
+        this.totalPages = Math.ceil(this.peopleAll.length / this.pageSize);
+        this.updatePagedData();
+      },
+      error: (err) => console.error('Error fetching people:', err),
+      complete: () => {
+        this.loading = false;
+      },
     });
   }
 
